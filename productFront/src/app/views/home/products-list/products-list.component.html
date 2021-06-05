@@ -19,8 +19,8 @@
             </p>
             <span>R${{product.productPrice}}</span>
             <mat-card-actions class="mat-raised-button">
-              <button mat-raised-button (click)="updateProduct(1)">Editar</button>
-              <button mat-raised-button>Excluir</button>
+              <button mat-raised-button  routerLink="api/product/{{product.id}}">Editar</button>
+              <button mat-raised-button (click)="deleteProduct(product.id)">Excluir</button>
             </mat-card-actions>
           </mat-card-content>
 

@@ -22,20 +22,26 @@ export class ProductService {
     private httpClient: HttpClient
   ) {}
 
-  public getProducts(): Observable<ResponsePageable> {
+  getProducts(): Observable<ResponsePageable> {
     return this.httpClient.get<ResponsePageable>(this.apiUrlGet);
   }
 
-  public getProduct(id: any): Observable<ResponsePageable> {
+  getProduct(id: any): Observable<ResponsePageable> {
     return this.httpClient.get<ResponsePageable>(this.apiUrl + id);
   }
 
-  public postProducts(product: any): Observable<Product> {
+  postProducts(product: any): Observable<Product> {
     return this.httpClient.post<any>(this.apiUrl, product, this.httpOptions);
   }
 
-  public updateProduct(product: any, id: any): Observable<Product> {
-    return this.httpClient.put<any>(this.apiUrl + id, product, this.httpOptions);
+  updateProduct(product:any): Observable<Product> {
+    const url = `${this.apiUrl}/${product.id}`;
+    return this.httpClient.put<Product>(url, product);
+  }
+
+  deleteProduct(id: any): Observable<Product> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.httpClient.delete<Product>(url);
   }
 
 }

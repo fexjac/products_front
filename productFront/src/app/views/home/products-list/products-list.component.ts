@@ -30,15 +30,10 @@ export class ProductsListComponent implements OnInit {
     });
   }
 
-  updateProduct(): void {
-    const dialogRef = this.dialog.open(ProductUpdateDialogComponent, {
-      minWidth: '400px',
-    });
-
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  deleteProduct(id: any) {
+    this.productService.deleteProduct(id)
+      .subscribe(() => {
+        this.getProducts();
+      });
   }
-
 }

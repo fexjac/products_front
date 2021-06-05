@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef} from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/shared/model/product.model';
 import { ProductService } from 'src/app/shared/service/product.service';
 
@@ -11,44 +12,39 @@ import { ProductService } from 'src/app/shared/service/product.service';
   styleUrls: ['./product-update-dialog.component.css']
 })
 export class ProductUpdateDialogComponent implements OnInit {
+  [x: string]: any;
   public productForm!: FormGroup;
   public product!: Product;
   public productService: any;
 
-  constructor(
-    public dialogRef: MatDialogRef<ProductUpdateDialogComponent>,
-    private fb: FormBuilder,
-    private rest: ProductService
-  ) { }
+  constructor(private ProductService: ProductService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
+      this.getProduct(this.activatedRoute.snapshot.params.id);
+   }
 
   ngOnInit(): void {
-    this.getProduct()
-    this.productForm = this.fb.group({
-      id: ['', [Validators.required]],
-      productName: ['', [Validators.required]],
-      productDescription: ['', [Validators.required]],
-      productPrice: ['', [Validators.required]]
-    });
 
   }
-  getProduct(){
-    this.productService.getProduct().subscribe((data: Product) => {
+
+  getProduct(id: any){
+    this.productService.getProduct(id)
+    .subscribe((data: Product) => {
       this.product = data;
       console.log(this.product)
     });
   }
 
+  updateProduct(product: any) {
+    this.ProductService.updateProduct(product)
+      .subscribe(
+        () => { this.router.navigateByUrl('/');});
+  }
+
+
   cancel(): void {
     this.dialogRef.close(true);
     this.productForm.reset();
   }
-
-  updateProduct(){
-    this.rest.postProducts(this.productForm.value).subscribe(result => {});
-    this.dialogRef.close(true);
-    this.productForm.reset();
-  }
-
-
 
 }
